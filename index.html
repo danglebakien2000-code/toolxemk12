@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<title>K12Online Helper</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #080c16;
+    --card: #111827;
+    --card2: #172033;
+    --border: #26334d;
+    --text: #f1f5ff;
+    --muted: #8d9ab2;
+    --primary: #6675ff;
+    --primary2: #4f46e5;
+    --green: #35d399;
+    --yellow: #f6c85f;
+    --red: #fb7185;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(83, 100, 255, .20),
+            transparent 35%
+        ),
+        var(--bg);
+    color: var(--text);
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+.container {
+    width: 100%;
+    max-width: 760px;
+    margin: auto;
+    padding: 16px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.logo-title small {
+    color: #8995ff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.logo-title h1 {
+    font-size: 23px;
+    margin-top: 4px;
+}
+
+.connection {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #64748b;
+}
+
+.connection.online {
+    background: var(--green);
+    box-shadow: 0 0 14px var(--green);
+}
+
+.card {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(23, 32, 51, .97),
+            rgba(13, 19, 32, .97)
+        );
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 13px;
+}
+
+.card h2 {
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.description {
+    color: var(--muted);
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 13px 14px;
+    margin-top: 7px;
+    margin-bottom: 13px;
+
+    color: var(--text);
+    background: #0a111f;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    outline: none;
+}
+
+input:focus {
+    border-color: var(--primary);
+}
+
+label {
+    color: #cbd5e1;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+button {
+    border: 1px solid var(--border);
+    background: #182238;
+    color: var(--text);
+
+    border-radius: 12px;
+    padding: 11px 13px;
+
+    font-weight: 750;
+    cursor: pointer;
+
+    transition: .15s;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    border-color: #44547a;
+}
+
+button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.primary {
+    color: white;
+    border: 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary2)
+        );
+}
+
+.danger {
+    background: #351923;
+    border-color: #6d3041;
+    color: #ffd6dc;
+}
+
+.ghost {
+    background: transparent;
+}
+
+.login-logo {
+    width: 52px;
+    height: 52px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7785ff,
+            #4f46e5
+        );
+
+    font-weight: 900;
+    margin-bottom: 15px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* DASHBOARD */
+
+.account {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.account small {
+    color: var(--muted);
+}
+
+.account strong {
+    display: block;
+    font-size: 18px;
+    margin-top: 3px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.stat span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.stat strong {
+    display: block;
+    font-size: 28px;
+    margin-top: 3px;
+}
+
+.controls-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.state {
+    margin-top: 12px;
+    padding: 10px;
+
+    background: #0a111f;
+    border-radius: 10px;
+
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.state.running {
+    color: #c8d0ff;
+}
+
+.state.paused {
+    color: var(--yellow);
+}
+
+.state.error {
+    color: var(--red);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-header span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* LESSON */
+
+.lesson {
+    background: #0c1424;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    padding: 13px;
+    margin-top: 9px;
+}
+
+.lesson-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.lesson-title {
+    font-weight: 750;
+}
+
+.badge {
+    padding: 3px 8px;
+    border-radius: 999px;
+
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.badge.done {
+    color: var(--green);
+    background: rgba(53, 211, 153, .12);
+}
+
+.badge.pending {
+    color: var(--yellow);
+    background: rgba(246, 200, 95, .12);
+}
+
+.badge.processing {
+    color: #bbc3ff;
+    background: rgba(102, 117, 255, .14);
+}
+
+.badge.blocked {
+    color: var(--red);
+    background: rgba(251, 113, 133, .12);
+}
+
+.progress {
+    height: 7px;
+    background: #202b40;
+    border-radius: 999px;
+
+    overflow: hidden;
+    margin: 10px 0 6px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6675ff,
+            #35d399
+        );
+
+    border-radius: inherit;
+
+    transition: width .35s ease;
+}
+
+.lesson-meta {
+    display: flex;
+    justify-content: space-between;
+
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* LOG */
+
+.log {
+    height: 220px;
+    overflow-y: auto;
+
+    white-space: pre-wrap;
+
+    background: #070c15;
+    border-radius: 12px;
+
+    padding: 12px;
+
+    color: #b8c3d8;
+
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Consolas,
+        monospace;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.notice {
+    border-color: #35425f;
+}
+
+.notice p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-top: 5px;
+}
+
+.empty {
+    text-align: center;
+    padding: 25px 10px;
+    color: var(--muted);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 430px) {
+
+    .container {
+        padding: 12px 10px 30px;
+    }
+
+    .controls-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .lesson-top {
+        align-items: flex-start;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+    <div class="logo-title">
+        <small>K12ONLINE HELPER</small>
+        <h1>Quản lý học tập</h1>
+    </div>
+
+    <div id="connection"
+         class="connection">
+    </div>
+
+</header>
+
+
+<!-- ================= LOGIN ================= -->
+
+<section id="loginScreen">
+
+    <div class="card">
+
+        <div class="login-logo">
+            K12
+        </div>
+
+        <h2>
+            Đăng nhập K12Online
+        </h2>
+
+        <p class="description">
+            Công cụ chỉ sử dụng thông tin đăng nhập để
+            đăng nhập vào K12Online chính thức.
+            Mật khẩu không được lưu vào localStorage.
+        </p>
+
+    </div>
+
+
+    <form id="loginForm"
+          class="card">
+
+        <label>
+            Tài khoản
+        </label>
+
+        <input
+            id="username"
+            autocomplete="username"
+            placeholder="Nhập tài khoản"
+            required
+        >
+
+
+        <label>
+            Mật khẩu
+        </label>
+
+        <input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Nhập mật khẩu"
+            required
+        >
+
+
+        <label>
+            URL K12Online của trường
+        </label>
+
+        <input
+            id="schoolUrl"
+            type="url"
+            placeholder="https://k12online.vn/"
+        >
+
+
+        <button
+            class="primary"
+            type="submit"
+            style="width:100%;">
+
+            Đăng nhập
+
+        </button>
+
+    </form>
+
+</section>
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section id="dashboard"
+         class="hidden">
+
+
+    <!-- ACCOUNT -->
+
+    <div class="card account">
+
+        <div>
+
+            <small>
+                Tài khoản
+            </small>
+
+            <strong id="accountName">
+                —
+            </strong>
+
+        </div>
+
+        <button
+            class="ghost"
+            id="logoutButton">
+
+            Đăng xuất
+
+        </button>
+
+    </div>
+
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+        <div class="card stat">
+
+            <span>
+                Chưa hoàn thành
+            </span>
+
+            <strong id="pendingCount">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="card stat">
+
+            <span>
+                Đã hoàn thành
+            </span>
+
+            <strong id="completedCount">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONTROL -->
+
+    <div class="card">
+
+        <div class="controls-grid">
+
+            <button id="scanButton">
+                Quét bài
+            </button>
+
+            <button
+                id="startButton"
+                class="primary">
+
+                Bắt đầu
+
+            </button>
+
+            <button id="pauseButton">
+                Tạm dừng
+            </button>
+
+            <button id="resumeButton">
+                Tiếp tục
+            </button>
+
+            <button
+                id="stopButton"
+                class="danger">
+
+                Dừng
+
+            </button>
+
+            <button id="refreshButton">
+                Làm mới
+            </button>
+
+        </div>
+
+
+        <div
+            id="state"
+            class="state">
+
+            Sẵn sàng
+
+        </div>
+
+    </div>
+
+
+    <!-- LESSON LIST -->
+
+    <div class="card">
+
+        <div class="section-header">
+
+            <h2>
+                Danh sách bài học
+            </h2>
+
+            <span id="courseName">
+                Chưa quét
+            </span>
+
+        </div>
+
+
+        <div id="lessonList">
+
+            <div class="empty">
+
+                Nhấn "Quét bài" để tìm
+                nội dung chưa hoàn thành.
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- LOG -->
+
+    <div class="card">
+
+        <div class="section-header">
+
+            <h2>
+                Nhật ký hoạt động
+            </h2>
+
+            <button
+                id="clearLog"
+                class="ghost">
+
+                Xóa
+
+            </button>
+
+        </div>
+
+
+        <pre
+            id="log"
+            class="log"></pre>
+
+    </div>
+
+
+    <!-- SAFETY -->
+
+    <div class="card notice">
+
+        <strong>
+            Nguyên tắc hoạt động
+        </strong>
+
+        <p>
+            Công cụ không sửa phần trăm tiến độ,
+            không gửi request giả và không bypass
+            CAPTCHA, OTP hoặc bài kiểm tra.
+            Khi gặp yêu cầu thao tác thủ công,
+            quá trình sẽ tạm dừng.
+        </p>
+
+    </div>
+
+</section>
+
+</div>
+
+
+<script>
+
+"use strict";
+
+
+/*
+====================================================
+K12ONLINE HELPER
+====================================================
+
+Các selector bên dưới chỉ là selector mẫu.
+
+Khi chạy trong WebView trên chính trang K12Online,
+cần thay selector cho đúng giao diện của trường.
+
+Không dùng API riêng hoặc request giả.
+*/
+
+
+const SELECTORS = {
+
+    lesson:
+        "[data-lesson-id]," +
+        ".lesson-item," +
+        ".lecture-item," +
+        ".course-lesson",
+
+    title:
+        "[data-title]," +
+        ".lesson-title," +
+        ".lecture-title," +
+        ".title",
+
+    progress:
+        "[data-progress]," +
+        ".progress-text," +
+        ".percent," +
+        ".progress",
+
+    video:
+        "video",
+
+    completion:
+        "button, a",
+
+    captcha:
+        "iframe[src*='captcha']," +
+        "[class*='captcha' i]," +
+        "[id*='captcha' i]," +
+        "[class*='recaptcha' i]",
+
+    manual:
+        "textarea," +
+        "input[type='radio']," +
+        "input[type='checkbox']"
+};
+
+
+const state = {
+
+    username: "",
+
+    lessons: [],
+
+    running: false,
+
+    paused: false,
+
+    stopped: false,
+
+    currentIndex: -1
+
+};
+
+
+const $ = id =>
+    document.getElementById(id);
+
+
+/* ================= UTIL ================= */
+
+function sleep(ms) {
+
+    return new Promise(
+        resolve => setTimeout(resolve, ms)
+    );
+
+}
+
+
+function time() {
+
+    return new Date()
+        .toLocaleTimeString(
+            "vi-VN",
+            {
+                hour12:false
+            }
+        );
+
+}
+
+
+function log(message) {
+
+    const box =
+        $("log");
+
+    box.textContent +=
+        `[${time()}] ${message}\n`;
+
+    box.scrollTop =
+        box.scrollHeight;
+
+}
+
+
+function setState(
+    message,
+    type = ""
+) {
+
+    const box =
+        $("state");
+
+    box.textContent =
+        message;
+
+    box.className =
+        "state " + type;
+
+}
+
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(
+            /[&<>"']/g,
+            char => ({
+                "&":"&amp;",
+                "<":"&lt;",
+                ">":"&gt;",
+                '"':"&quot;",
+                "'":"&#039;"
+            }[char])
+        );
+
+}
+
+
+/* ================= LOGIN ================= */
+
+$("loginForm")
+.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        const username =
+            $("username")
+            .value
+            .trim();
+
+        const password =
+            $("password")
+            .value;
+
+        const schoolUrl =
+            $("schoolUrl")
+            .value
+            .trim();
+
+
+        if (
+            !username ||
+            !password
+        ) {
+
+            return;
+
+        }
+
+
+        state.username =
+            username;
+
+
+        $("accountName")
+            .textContent =
+            username;
+
+
+        /*
+         * Không lưu password.
+         *
+         * Khi chạy trong Android WebView,
+         * gọi bridge Kotlin.
+         */
+
+        if (
+            window.Android &&
+            Android.login
+        ) {
+
+            Android.login(
+                username,
+                password,
+                schoolUrl
+            );
+
+        }
+        else {
+
+            /*
+             * HTML chạy độc lập không thể
+             * điều khiển trang K12Online
+             * khác origin.
+             */
+
+            alert(
+                "Hãy chạy file này bên trong WebView Android để kết nối K12Online."
+            );
+
+        }
+
+
+        $("password")
+            .value = "";
+
+    }
+);
+
+
+/* ================= DASHBOARD ================= */
+
+function showDashboard() {
+
+    $("loginScreen")
+        .classList
+        .add("hidden");
+
+    $("dashboard")
+        .classList
+        .remove("hidden");
+
+    $("connection")
+        .classList
+        .add("online");
+
+}
+
+
+function renderLessons() {
+
+    const box =
+        $("lessonList");
+
+
+    if (
+        !state.lessons.length
+    ) {
+
+        box.innerHTML =
+            `<div class="empty">
+                Chưa có dữ liệu.
+             </div>`;
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+        state.lessons
+        .map(
+            lesson => {
+
+                let badge =
+                    "pending";
+
+                let text =
+                    "Chưa hoàn thành";
+
+
+                if (
+                    lesson.status ===
+                    "done"
+                ) {
+
+                    badge = "done";
+                    text =
+                        "Đã hoàn thành";
+
+                }
+
+                if (
+                    lesson.status ===
+                    "processing"
+                ) {
+
+                    badge =
+                        "processing";
+
+                    text =
+                        "Đang xử lý";
+
+                }
+
+                if (
+                    lesson.status ===
+                    "blocked"
+                ) {
+
+                    badge =
+                        "blocked";
+
+                    text =
+                        "Không thể tự động xử lý";
+
+                }
+
+
+                const progress =
+                    Math.max(
+                        0,
+                        Math.min(
+                            100,
+                            lesson.progress
+                        )
+                    );
+
+
+                return `
+
+                <div class="lesson">
+
+                    <div class="lesson-top">
+
+                        <span
+                            class="lesson-title">
+
+                            ${escapeHTML(
+                                lesson.title
+                            )}
+
+                        </span>
+
+                        <span
+                            class="badge ${badge}">
+
+                            ${text}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar"
+                            style="width:${progress}%">
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="lesson-meta">
+
+                        <span>
+                            ${progress}%
+                        </span>
+
+                        <span>
+                            ${escapeHTML(
+                                lesson.type ||
+                                "Nội dung"
+                            )}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                `;
+
+            }
+        )
+        .join("");
+
+
+    $("pendingCount")
+        .textContent =
+        state.lessons
+        .filter(
+            x => x.progress < 100
+        )
+        .length;
+
+
+    $("completedCount")
+        .textContent =
+        state.lessons
+        .filter(
+            x => x.progress >= 100
+        )
+        .length;
+
+}
+
+
+/* ================= SCAN ================= */
+
+$("scanButton")
+.addEventListener(
+    "click",
+    scanLessons
+);
+
+
+function scanLessons() {
+
+    log(
+        "Bắt đầu quét bài chưa hoàn thành..."
+    );
+
+    setState(
+        "Đang quét...",
+        "running"
+    );
+
+
+    /*
+     * Khi chạy trong WebView,
+     * Kotlin sẽ gọi hàm scanLessons
+     * trên trang K12Online thực tế.
+     */
+
+    if (
+        window.Android &&
+        Android.scan
+    ) {
+
+        Android.scan();
+
+        return;
+
+    }
+
+
+    /*
+     * Demo dữ liệu cục bộ để
+     * kiểm tra giao diện.
+     *
+     * Không dùng dữ liệu này để
+     * báo tiến độ thật.
+     */
+
+    state.lessons = [
+
+        {
+            id: "demo-1",
+            title: "Bài 1 - Giới thiệu",
+            progress: 100,
+            type: "Video",
+            status: "done"
+        },
+
+        {
+            id: "demo-2",
+            title: "Bài 2 - Nội dung bài học",
+            progress: 65,
+            type: "Video",
+            status: "pending"
+        },
+
+        {
+            id: "demo-3",
+            title: "Bài 3 - Bài đọc",
+            progress: 0,
+            type: "Trang",
+            status: "pending"
+        }
+
+    ];
+
+
+    renderLessons();
+
+
+    log(
+        "Demo giao diện: tìm thấy 2 bài chưa hoàn thành."
+    );
+
+
+    setState(
+        "Quét xong",
+        ""
+    );
+
+}
+
+
+/* ================= START ================= */
+
+$("startButton")
+.addEventListener(
+    "click",
+    startProcessing
+);
+
+
+async function startProcessing() {
+
+    if (
+        state.running
+    ) {
+
+        return;
+
+    }
+
+
+    const pending =
+        state.lessons
+        .filter(
+            x =>
+                x.progress < 100 &&
+                x.status !== "blocked"
+        );
+
+
+    if (
+        !pending.length
+    ) {
+
+        log(
+            "Không có bài đủ điều kiện xử lý."
+        );
+
+        return;
+
+    }
+
+
+    state.running = true;
+    state.stopped = false;
+    state.paused = false;
+
+
+    setState(
+        "Đang xử lý...",
+        "running"
+    );
+
+
+    for (
+        let i = 0;
+        i < state.lessons.length;
+        i++
+    ) {
+
+        if (
+            state.stopped
+        ) {
+
+            break;
+
+        }
+
+
+        const lesson =
+            state.lessons[i];
+
+
+        if (
+            lesson.progress >= 100 ||
+            lesson.status === "blocked"
+        ) {
+
+            continue;
+
+        }
+
+
+        state.currentIndex =
+            i;
+
+
+        lesson.status =
+            "processing";
+
+
+        renderLessons();
+
+
+        log(
+            `Đang xử lý: ${lesson.title}`
+        );
+
+
+        while (
+            state.paused &&
+            !state.stopped
+        ) {
+
+            await sleep(500);
+
+        }
+
+
+        if (
+            state.stopped
+        ) {
+
+            break;
+
+        }
+
+
+        /*
+         * Gọi Android để xử lý
+         * bài thực tế.
+         */
+
+        if (
+            window.Android &&
+            Android.start
+        ) {
+
+            Android.start(
+                lesson.id
+            );
+
+
+            /*
+             * Kotlin sẽ trả về kết quả
+             * sau khi hệ thống K12Online
+             * xác nhận.
+             */
+
+            continue;
+
+        }
+
+
+        /*
+         * Demo chỉ mô phỏng giao diện.
+         */
+
+        const result =
+            await processDemoLesson(
+                lesson
+            );
+
+
+        if (
+            result === "blocked"
+        ) {
+
+            lesson.status =
+                "blocked";
+
+            renderLessons();
+
+
+            log(
+                "Vui lòng thao tác thủ công để tiếp tục."
+            );
+
+
+            setState(
+                "Vui lòng thao tác thủ công để tiếp tục.",
+                "paused"
+            );
+
+
+            state.running =
+                false;
+
+            return;
+
+        }
+
+
+        if (
+            result === "done"
+        ) {
+
+            lesson.progress =
+                100;
+
+            lesson.status =
+                "done";
+
+            renderLessons();
+
+
+            log(
+                "Tiến độ: 100%"
+            );
+
+        }
+
+    }
+
+
+    state.running =
+        false;
+
+
+    setState(
+        state.stopped
+            ? "Đã dừng"
+            : "Hoàn tất",
+        ""
+    );
+
+
+    log(
+        "Đã kết thúc quá trình."
+    );
+
+}
+
+
+/* ================= DEMO PROCESSOR ================= */
+
+async function processDemoLesson(
+    lesson
+) {
+
+    if (
+        lesson.type === "Video"
+    ) {
+
+        log(
+            "Đang chờ video phát hết..."
+        );
+
+
+        await sleep(3000);
+
+
+        log(
+            "Video đã phát hết."
+        );
+
+    }
+
+
+    if (
+        lesson.type === "Trang"
+    ) {
+
+        log(
+            "Đang cuộn toàn bộ nội dung..."
+        );
+
+
+        for (
+            let i = 0;
+            i < 5;
+            i++
+        ) {
+
+            if (
+                state.stopped
+            ) {
+
+                return "stopped";
+
+            }
+
+
+            while (
+                state.paused
+            ) {
+
+                await sleep(500);
+
+            }
+
+
+            await sleep(600);
+
+        }
+
+
+        log(
+            "Đã đọc hết nội dung."
+        );
+
+    }
+
+
+    log(
+        "Đang kiểm tra nút xác nhận hoàn thành..."
+    );
+
+
+    await sleep(1000);
+
+
+    log(
+        "Đã xác nhận hoàn thành."
+    );
+
+
+    return "done";
+
+}
+
+
+/* ================= PAUSE ================= */
+
+$("pauseButton")
+.addEventListener(
+    "click",
+    function() {
+
+        state.paused =
+            true;
+
+
+        setState(
+            "Đã tạm dừng",
+            "paused"
+        );
+
+
+        log(
+            "Đã tạm dừng."
+        );
+
+
+        if (
+            window.Android &&
+            Android.pause
+        ) {
+
+            Android.pause();
+
+        }
+
+    }
+);
+
+
+/* ================= RESUME ================= */
+
+$("resumeButton")
+.addEventListener(
+    "click",
+    function() {
+
+        state.paused =
+            false;
+
+
+        setState(
+            "Đang chạy...",
+            "running"
+        );
+
+
+        log(
+            "Tiếp tục xử lý."
+        );
+
+
+        if (
+            window.Android &&
+            Android.resume
+        ) {
+
+            Android.resume();
+
+        }
+
+    }
+);
+
+
+/* ================= STOP ================= */
+
+$("stopButton")
+.addEventListener(
+    "click",
+    function() {
+
+        state.stopped =
+            true;
+
+        state.running =
+            false;
+
+        state.paused =
+            false;
+
+
+        setState(
+            "Đã dừng",
+            "error"
+        );
+
+
+        log(
+            "Đã dừng theo yêu cầu."
+        );
+
+
+        if (
+            window.Android &&
+            Android.stop
+        ) {
+
+            Android.stop();
+
+        }
+
+    }
+);
+
+
+/* ================= REFRESH ================= */
+
+$("refreshButton")
+.addEventListener(
+    "click",
+    function() {
+
+        log(
+            "Đang làm mới trạng thái..."
+        );
+
+
+        if (
+            window.Android &&
+            Android.refresh
+        ) {
+
+            Android.refresh();
+
+        }
+        else {
+
+            scanLessons();
+
+        }
+
+    }
+);
+
+
+/* ================= CLEAR LOG ================= */
+
+$("clearLog")
+.addEventListener(
+    "click",
+    function() {
+
+        $("log")
+            .textContent = "";
+
+    }
+);
+
+
+/* ================= LOGOUT ================= */
+
+$("logoutButton")
+.addEventListener(
+    "click",
+    function() {
+
+        state.running =
+            false;
+
+        state.stopped =
+            true;
+
+        state.lessons =
+            [];
+
+
+        $("dashboard")
+            .classList
+            .add("hidden");
+
+
+        $("loginScreen")
+            .classList
+            .remove("hidden");
+
+
+        $("accountName")
+            .textContent = "—";
+
+
+        $("username")
+            .value = "";
+
+        $("password")
+            .value = "";
+
+
+        renderLessons();
+
+
+        log(
+            "Đã xóa phiên cục bộ."
+        );
+
+
+        if (
+            window.Android &&
+            Android.logout
+        ) {
+
+            Android.logout();
+
+        }
+
+    }
+);
+
+
+/* ================= ANDROID EVENTS ================= */
+
+window.nativeEvent =
+function(
+    name,
+    data
+) {
+
+    if (
+        name === "loginStarting"
+    ) {
+
+        showDashboard();
+
+        log(
+            "Đang mở K12Online chính thức..."
+        );
+
+    }
+
+
+    if (
+        name === "k12PageReady"
+    ) {
+
+        showDashboard();
+
+        log(
+            "Đã mở K12Online chính thức."
+        );
+
+        setState(
+            "Đã kết nối K12Online",
+            ""
+        );
+
+    }
+
+
+    if (
+        name === "log"
+    ) {
+
+        log(
+            data.message
+        );
+
+    }
+
+
+    if (
+        name === "error"
+    ) {
+
+        log(
+            data.message
+        );
+
+        setState(
+            data.message,
+            "error"
+        );
+
+    }
+
+
+    if (
+        name === "scanResult"
+    ) {
+
+        if (
+            data.error
+        ) {
+
+            log(
+                data.error
+            );
+
+            setState(
+                "Không thể quét",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        state.lessons =
+            data.lessons
+            .map(
+                lesson => ({
+
+                    ...lesson,
+
+                    status:
+                        lesson.progress >= 100
+                            ? "done"
+                            : lesson.progress < 0
+                                ? "blocked"
+                                : "pending"
+
+                })
+            );
+
+
+        renderLessons();
+
+
+        log(
+            `Tìm thấy ${data.pending} bài chưa hoàn thành.`
+        );
+
+
+        setState(
+            "Quét xong",
+            ""
+        );
+
+    }
+
+
+    if (
+        name === "lessonResult"
+    ) {
+
+        /*
+         * Android chỉ trả "done"
+         * khi hệ thống K12Online
+         * xác nhận hoàn thành.
+         */
+
+        if (
+            data.status === "done"
+        ) {
+
+            log(
+                "K12Online đã xác nhận hoàn thành."
+            );
+
+        }
+
+
+        if (
+            data.status === "blocked"
+        ) {
+
+            log(
+                "Vui lòng thao tác thủ công để tiếp tục."
+            );
+
+
+            setState(
+                "Cần thao tác thủ công",
+                "paused"
+            );
+
+        }
+
+    }
+
+};
+
+
+/* ================= INITIAL ================= */
+
+setState(
+    "Sẵn sàng"
+);
+
+</script>
+
+</body>
+      </html>
